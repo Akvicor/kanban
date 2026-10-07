@@ -1,0 +1,4 @@
+/* 列首和列尾的新建卡片输入框。 */
+.composer { display: flex; flex-direction: column; gap: 6px; margin: 4px 8px; }
+.composer-input { width: 100%; min-height: 0; font-family: inherit; }
+.composer-actions { display: flex; gap: 6px; }

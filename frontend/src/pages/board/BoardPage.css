@@ -1,0 +1,62 @@
+/* 看板页：顶栏、面板标签页和面板内容，尺寸与 design/style-samples 一致。 */
+.board-page { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.topbar {
+  flex: none; height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 16px;
+  background: var(--topbar-bg); border-bottom: 1px solid var(--border);
+}
+.topbar .menu-btn { flex: none; margin-left: -6px; }
+.crumbs { display: flex; align-items: center; gap: 6px; min-width: 0; white-space: nowrap; overflow: hidden; }
+.crumbs .dim, .crumbs .sep { color: var(--muted); }
+.crumbs strong { font-family: var(--font-heading); font-size: 1.05em; overflow: hidden; text-overflow: ellipsis; }
+.badge-main { flex: none; font-size: .72em; padding: 2px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.topbar-actions { margin-left: auto; display: flex; gap: 4px; }
+
+.panel-tabs {
+  flex: none; display: flex; align-items: flex-end; gap: 2px; padding: 8px 16px 0; overflow-x: auto; overflow-y: hidden;
+  background: var(--topbar-bg); border-bottom: 1px solid var(--border);
+}
+.tab {
+  position: relative; display: flex; align-items: center; gap: 6px; padding: 8px 6px 8px 14px;
+  color: var(--text-2); text-decoration: none; white-space: nowrap; cursor: pointer;
+  user-select: none; -webkit-user-select: none; touch-action: manipulation;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); font-weight: 600; }
+.tab.active::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: 0;
+  height: 2px; border-radius: 2px; background: var(--accent);
+}
+.tab.dragging { opacity: .4; }
+.tab.drop-before::before, .tab.drop-after::before {
+  content: ""; position: absolute; top: 6px; bottom: 6px; width: 2px; border-radius: 2px; background: var(--accent);
+}
+.tab.drop-before::before { left: 0; }
+.tab.drop-after::before { right: 0; }
+.tab .home { color: var(--star); font-size: .8em; }
+.tab .tab-more {
+  width: 20px; height: 20px; display: grid; place-items: center; padding: 0;
+  border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font: inherit; cursor: pointer; opacity: 0;
+}
+/* 标签页的更多按钮与卡片一致：悬停、菜单打开或键盘聚焦时才显示；触屏没有悬停，始终显示。 */
+.tab:hover .tab-more, .tab-more[data-state="open"], .tab-more:focus-visible { opacity: 1; }
+.tab-more:hover { background: var(--hover); color: var(--text); }
+@media (hover: none) { .tab .tab-more { opacity: 1; } }
+.tab-add {
+  align-self: center; margin-left: 4px; padding: 6px 10px; border: 0; border-radius: var(--radius-sm);
+  background: transparent; color: var(--muted); font: inherit; cursor: pointer; white-space: nowrap;
+}
+.tab-add:hover { background: var(--hover); color: var(--text-2); }
+
+.board-body { flex: 1; min-height: 0; padding: 16px; overflow: auto; }
+.board-content { flex: 1; min-height: 0; background: var(--board-bg, var(--bg)); }
+.board-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.read-only-banner {
+  margin: 0; padding: 8px 16px; background: var(--warn-soft); color: var(--warn); font-size: .85em;
+}
+
+/* 手机：顶栏只留看板名，标签页收窄边距。 */
+@media (max-width: 600px) {
+  .topbar { padding: 0 8px; }
+  .crumbs .dim { display: none; }
+  .panel-tabs { padding: 6px 8px 0; }
+}

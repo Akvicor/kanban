@@ -1,0 +1,5 @@
+.user-table-wrap { padding: 4px 0; overflow-x: auto; }
+.user-table { width: 100%; border-collapse: collapse; font-size: .92em; }
+.user-table th { padding: 10px 16px; color: var(--muted); font-size: .85em; font-weight: 500; text-align: left; white-space: nowrap; }
+.user-table td { padding: 10px 16px; border-top: 1px solid var(--border); white-space: nowrap; }
+.user-actions { display: flex; justify-content: flex-end; gap: 6px; }

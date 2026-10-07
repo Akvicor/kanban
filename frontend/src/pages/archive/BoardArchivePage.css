@@ -1,0 +1,4 @@
+.archive-tree { display: flex; flex-direction: column; gap: 1px; padding: 8px; }
+.archive-tree .dir-row:hover { background: transparent; }
+.archive-tree .dir-row.archived:hover { background: var(--hover); }
+.archive-tree .panel-row { min-height: 28px; color: var(--muted); font-size: .92em; }

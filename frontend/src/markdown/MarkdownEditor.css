@@ -1,0 +1,21 @@
+/* 描述编辑器：Gravity UI 主题变量对接到当前配色，外框与项目的输入框一致。 */
+.g-root.markdown-editor {
+  --g-font-family-sans: inherit;
+  --g-font-family-monospace: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --g-color-base-background: var(--surface);
+  --g-color-base-float: var(--surface);
+  --g-color-text-primary: var(--text);
+  --g-color-text-secondary: var(--muted);
+  --g-color-line-generic: var(--border);
+  --g-color-text-link: var(--accent);
+  --g-color-base-brand: var(--accent);
+  --g-color-text-brand-contrast: var(--accent-contrast);
+  --g-border-radius-m: var(--radius-sm);
+  background: transparent;
+  font-family: inherit;
+}
+.markdown-editor-view {
+  min-height: 200px; padding: 0 10px 8px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--input-bg);
+}
+.markdown-editor-view:focus-within { border-color: var(--accent); outline: 2px solid var(--accent-soft); }

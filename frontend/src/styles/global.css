@@ -1,0 +1,37 @@
+/* 全局基础样式：页面铺满窗口，颜色和字体取自当前配色变量。 */
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs);
+}
+
+h1, h2, h3 { font-family: var(--font-heading); }
+
+/*
+ * 滚动条：细圆角滑块、透明轨道、无箭头按钮，颜色取自配色变量 --scrollbar-thumb(-hover)。
+ * 只作用于鼠标设备；触屏设备沿用系统的悬浮式滚动条。
+ * Chrome / Edge / Safari 走 ::-webkit-scrollbar；Firefox 不支持该伪元素，改用标准属性。
+ * 标准属性只放在 Firefox 分支：Chrome 121 起元素一旦设置 scrollbar-width / scrollbar-color，
+ * 就会忽略 ::-webkit-scrollbar 的样式。
+ */
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb) padding-box;
+    border: 1px solid transparent;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-thumb:active { background-color: var(--scrollbar-thumb-hover); }
+
+  @supports not selector(::-webkit-scrollbar) {
+    * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) transparent; }
+  }
+}

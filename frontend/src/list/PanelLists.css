@@ -1,0 +1,128 @@
+/* 面板内容：工具栏和横向排列的列表，尺寸与 design/style-samples 一致。
+   这里是卡片详情抽屉的舞台：抽屉关闭时停靠在右边界外滑出，由本容器裁剪，
+   保证停靠状态不向任何滚动容器贡献横向溢出。 */
+.panel-view { position: relative; display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: clip; }
+.panel-error, .panel-loading { margin: 0 16px; }
+
+/* 工具栏：搜索、筛选、只看今日、归档入口。 */
+.toolbar { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 16px; }
+.toolbar-spacer { flex: 1; }
+.search {
+  width: 240px; height: 32px; display: flex; align-items: center; gap: 6px; padding: 0 10px;
+  background: var(--input-bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--muted);
+}
+.search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--text); font: inherit; }
+.search input::placeholder { color: var(--muted); }
+.toolbar .switch { height: 32px; gap: 8px; white-space: nowrap; }
+.chip-btn.on { border-color: var(--accent); color: var(--accent); }
+.filter-menu { max-height: min(480px, 70vh); overflow-y: auto; }
+.menu-label { padding: 6px 10px 2px; color: var(--muted); font-size: .75em; font-weight: 600; }
+.menu-key.mode-include { color: var(--accent); }
+.menu-key.mode-exclude { color: var(--danger); }
+.chip-btn {
+  height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px;
+  background: var(--surface); color: var(--text-2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font: inherit; cursor: pointer; white-space: nowrap;
+}
+.chip-btn.ghost { background: transparent; }
+.chip-btn:hover { background: var(--hover); }
+
+.lists {
+  flex: 1; min-height: 0; display: flex; align-items: flex-start; gap: var(--list-gap);
+  padding: 4px 16px 16px; overflow-x: auto; overflow-y: hidden;
+}
+.list {
+  position: relative; width: var(--list-w); flex: none; max-height: 100%; display: flex; flex-direction: column;
+  background: var(--list-bg); border: var(--list-border); border-radius: var(--radius);
+}
+.list.dragging { opacity: .4; }
+.list.drop-before::before, .list.drop-after::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 3px; border-radius: 2px; background: var(--accent);
+}
+.list.drop-before::before { left: calc(var(--list-gap) / -2 - 1px); }
+.list.drop-after::after { right: calc(var(--list-gap) / -2 - 1px); }
+
+.list-head {
+  display: flex; align-items: center; gap: 8px; padding: 10px 8px 6px 12px;
+  cursor: grab; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation;
+}
+.list-dot { width: 10px; height: 10px; flex: none; border-radius: 3px; background: var(--list-color); }
+.list-head h3 { margin: 0; overflow: hidden; font-size: 1em; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.count { flex: none; padding: 1px 7px; border-radius: 999px; background: var(--count-bg); color: var(--muted); font-size: .8em; }
+.sort { margin-left: auto; color: var(--muted); font-size: .75em; white-space: nowrap; }
+.list.card-over { outline: 2px dashed var(--accent); outline-offset: -2px; }
+.cards { display: flex; flex-direction: column; gap: var(--card-gap); padding: 4px 8px; overflow-y: auto; min-height: 8px; }
+.add-card {
+  flex: none; display: flex; align-items: center; gap: 6px; margin: 0 6px; padding: 6px 10px;
+  border: 0; background: transparent; color: var(--muted); border-radius: var(--radius-sm);
+  font: inherit; font-size: .9em; text-align: left; cursor: pointer;
+}
+.add-card:hover { background: var(--hover); color: var(--text-2); }
+.add-card:last-child { margin-bottom: 6px; }
+/* 宽屏下抽屉压在列区域右侧，给列区域留出同宽的滚动余量，被遮住的列可以横向滚出来。 */
+.panel-view.drawer-open .lists { padding-right: 476px; }
+@media (max-width: 1000px) {
+  .panel-view.drawer-open .lists { padding-right: 16px; }
+}
+
+/* 手机：搜索框占满一行；每列接近屏幕宽度，左右滑动时按列对齐。 */
+@media (max-width: 600px) {
+  .toolbar { padding: 8px 12px; }
+  .search { flex: 1 1 100%; width: auto; min-width: 0; }
+  .lists, .panel-view.drawer-open .lists { gap: 10px; padding: 4px 12px 12px; scroll-snap-type: x mandatory; }
+  .list, .add-list { width: calc(100vw - 48px); scroll-snap-align: center; }
+  .lists.dragging { scroll-snap-type: none; }
+}
+
+.add-list {
+  width: var(--list-w); flex: none; display: flex; align-items: center; gap: 6px; padding: 12px;
+  border: 1px dashed var(--border-strong); border-radius: var(--radius);
+  background: transparent; color: var(--muted); font: inherit; cursor: pointer;
+}
+.add-list:hover { color: var(--text-2); background: var(--hover); }
+
+/* 列表设置和操作配置弹窗。 */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.color-row { display: flex; align-items: center; gap: 12px; min-height: 30px; }
+.dialog:has(.list-rules) { width: min(560px, calc(100vw - 32px)); }
+.rule-op { padding: 12px 0; border-top: 1px solid var(--border); }
+.rule-op:first-child { padding-top: 0; border-top: 0; }
+.rule-op h3 { margin: 0 0 2px; font-size: .95em; }
+.rule-op .hint { margin-bottom: 8px; }
+.rule-op > .field + .field, .rule-op > .field-row { margin-top: 10px; }
+.label-picker { display: flex; flex-wrap: wrap; gap: 6px; }
+.label-chip {
+  padding: 3px 9px; border: 1px solid var(--border); border-radius: var(--label-radius);
+  background: transparent; color: var(--text-2); font: inherit; font-size: .82em; cursor: pointer;
+}
+.label-chip.on {
+  border-color: transparent; font-weight: 500;
+  background: color-mix(in srgb, var(--c) var(--label-mix), transparent);
+  color: color-mix(in srgb, var(--c) 72%, var(--text));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 45%, transparent);
+}
+
+/* 列表归档和卡片归档弹窗。 */
+.archive-list { display: flex; flex-direction: column; gap: 8px; }
+.archive-list-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.archive-list-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.archive-list-info strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.archive-card-open { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.archive-card-open:hover strong { color: var(--accent); }
+.dialog:has(.archive-card-row) { width: min(620px, calc(100vw - 32px)); }
+.archive-card-row { flex-wrap: wrap; }
+.archive-card-restore { display: flex; align-items: center; gap: 6px; }
+.archive-card-restore .inline-select { height: 28px; max-width: 160px; }
+
+/* 落点回弹：挤开动画中被拖动的那一个轻微缩放后落定（transform 由 FLIP 管理，不在此动画）。 */
+@keyframes flip-land {
+  from { transform: scale(1.03); }
+  to { transform: scale(1); }
+}
+.card.landed, .list.landed { animation: flip-land .22s ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .card.landed, .list.landed { animation: none; }
+}
+
+/* 拖动平移看板期间的光标反馈。 */
+.panel-view.panning { cursor: grabbing; user-select: none; }

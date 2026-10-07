@@ -1,0 +1,14 @@
+.menu {
+  z-index: 60; min-width: 168px; padding: 4px;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--card-shadow-hover);
+  font-family: var(--font); font-size: var(--fs);
+}
+.menu-item {
+  display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+  border-radius: calc(var(--radius-sm) - 2px); font-size: .92em; cursor: pointer; outline: none; user-select: none;
+}
+.menu-item[data-highlighted] { background: var(--hover); }
+.menu-item[data-disabled] { color: var(--muted); cursor: not-allowed; }
+.menu-item.danger { color: var(--danger); }
+.menu-separator { height: 1px; margin: 4px 0; background: var(--border); }

@@ -1,0 +1,9 @@
+.idea
+/watch
+/backend/bin
+/backend/cmd/app/server/web/build
+/build
+/frontend/node_modules
+/frontend/build
+/frontend/.yarn/install-state.gz
+/frontend/.env*.local

@@ -1,0 +1,56 @@
+/* Markdown 描述的显示：YFM 样式（@diplodoc/transform/dist/css/yfm.css）的变量对接到当前配色。 */
+.yfm.markdown {
+  --yfm-font-family-sans: inherit;
+  --yfm-font-family-monospace: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --yfm-font-size: .9rem;
+  --yfm-font-line-height: 1.7;
+  --yfm-color-text: var(--text-2);
+  --yfm-color-base: var(--surface);
+  --yfm-color-border: var(--border);
+  --yfm-color-accent: var(--accent);
+  --yfm-color-link: var(--accent);
+  --yfm-color-link-hover: var(--accent);
+  --yfm-color-inline-code: var(--text);
+  --yfm-color-inline-code-background: var(--hover);
+  --yfm-color-code-background: var(--hover);
+  --yfm-color-hljs-background: var(--hover);
+  --yfm-color-table-border: var(--border);
+  --yfm-color-table-background: var(--surface);
+  --yfm-color-table-head-background: var(--hover);
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+.yfm.markdown > :first-child { margin-top: 0; }
+.yfm.markdown > :last-child { margin-bottom: 0; }
+.yfm.markdown img { max-width: 100%; }
+
+/* 暗色配色下代码高亮使用浅色文字。 */
+:root[data-palette="dark"] .yfm.markdown {
+  --yfm-color-hljs-subst: #c9d1d9;
+  --yfm-color-hljs-comment: #8b949e;
+  --yfm-color-hljs-deletion: #ffa198;
+  --yfm-color-hljs-section: #ffa198;
+  --yfm-color-hljs-pseudo: #d2a8ff;
+  --yfm-color-hljs-literal: #7ee787;
+  --yfm-color-hljs-addition: #7ee787;
+  --yfm-color-hljs-meta: #79c0ff;
+  --yfm-color-hljs-meta-string: #a5d6ff;
+}
+
+/* 文字颜色 {red}(文字)，与编辑器中的颜色名一致。 */
+.yfm-colorify--gray { color: var(--muted); }
+.yfm-colorify--yellow { color: #c99a06; }
+.yfm-colorify--orange { color: #e5600b; }
+.yfm-colorify--red { color: var(--danger); }
+.yfm-colorify--green { color: #2f9e44; }
+.yfm-colorify--blue { color: var(--info); }
+.yfm-colorify--violet { color: #8250df; }
+
+/* 超过高度的长描述先折叠，底部渐隐提示还有内容。 */
+.markdown-clip { position: relative; }
+.markdown-clip.collapsed { overflow: hidden; }
+.markdown-clip.collapsed::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 64px;
+  background: linear-gradient(transparent, var(--surface));
+}
+.markdown-toggle { margin-top: 6px; }

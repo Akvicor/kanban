@@ -1,0 +1,10 @@
+.panel-options { display: flex; flex-direction: column; gap: 18px; }
+.panel-options h3 { margin: 0 0 4px; font-size: .95em; }
+.panel-options .hint { margin-bottom: 10px; }
+
+.option-list { display: flex; flex-direction: column; gap: 6px; }
+.option-row { display: flex; align-items: center; gap: 6px; }
+.option-row .input { flex: 1; min-width: 0; height: 30px; }
+.option-row.new { padding-top: 6px; border-top: 1px dashed var(--border); }
+/* 弹窗中内容较多，放宽宽度。 */
+.dialog:has(.panel-options) { width: min(520px, calc(100vw - 32px)); }

@@ -1,0 +1,81 @@
+/*
+ * 三种配色的 CSS 变量，取值来自 design/style-samples。
+ * 配色只改变颜色、卡片和面板的圆角、阴影和字体，布局由各组件样式决定，与配色无关。
+ * 当前配色由 <html data-palette="..."> 选择，见 palette.ts。
+ */
+
+/* 配色 A 清爽（默认，亮色）：浅灰底、白卡片、细边框，蓝色强调色。 */
+:root,
+:root[data-palette="clean"] {
+  color-scheme: light;
+  --font: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-heading: var(--font);
+  --fs: 14px;
+  --bg: #F7F8FA; --surface: #FFFFFF; --sidebar-bg: #FBFBFC; --topbar-bg: #FFFFFF;
+  --border: #E6E8EC; --border-strong: #CDD2DA;
+  --text: #16181D; --text-2: #3B414C; --muted: #8A919E;
+  --accent: #0C66E4; --accent-contrast: #FFFFFF; --accent-soft: #E9F2FF;
+  --active-bg: #E9F2FF; --active-text: #0055CC; --active-shadow: none;
+  --hover: #F0F2F5; --star: #F5A524; --input-bg: #F7F8FA; --track: #D5D9E0;
+  --list-bg: #F0F2F5; --list-border: 1px solid transparent; --list-gap: 12px; --list-w: 280px; --count-bg: #E3E6EB;
+  --card-bg: #FFFFFF; --card-border: 1px solid #E6E8EC;
+  --radius: 10px; --radius-sm: 6px; --radius-card: 8px;
+  --card-shadow: 0 1px 2px rgba(16, 24, 40, .04); --card-shadow-hover: 0 4px 14px rgba(16, 24, 40, .09);
+  --card-pad: 12px; --card-gap: 8px;
+  --label-radius: 4px; --label-mix: 14%;
+  --danger: #D93036; --danger-soft: #FDECEC; --warn: #B45309; --warn-soft: #FEF3E2; --info: #2563EB; --info-soft: #E8F0FE;
+  --drawer-shadow: -12px 0 32px rgba(16, 24, 40, .08);
+  --scrollbar-thumb: rgba(22, 24, 29, .2); --scrollbar-thumb-hover: rgba(22, 24, 29, .36);
+  --cover-placeholder: linear-gradient(135deg, #7dd3fc, #a78bfa 60%, #f9a8d4);
+}
+
+/* 配色 B 暗夜（暗色）：深色底，层次靠明度区分，蓝紫强调色。 */
+:root[data-palette="dark"] {
+  color-scheme: dark;
+  --font: "Inter", -apple-system, "Segoe UI", "PingFang SC", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --font-heading: var(--font);
+  --fs: 14px;
+  --bg: #0E1014; --surface: #151821; --sidebar-bg: #111319; --topbar-bg: #111319;
+  --border: #232733; --border-strong: #3A4152;
+  --text: #E7EAF0; --text-2: #B8BFCC; --muted: #7C8494;
+  --accent: #7C9CFF; --accent-contrast: #0E1014; --accent-soft: rgba(124, 156, 255, .15);
+  --active-bg: rgba(124, 156, 255, .15); --active-text: #C3D0FF; --active-shadow: none;
+  --hover: #1C202B; --star: #F5C451; --input-bg: #0E1014; --track: #2C3240;
+  --list-bg: #13161E; --list-border: 1px solid #1D212B; --list-gap: 12px; --list-w: 280px; --count-bg: #222734;
+  --card-bg: #1A1E28; --card-border: 1px solid #262B38;
+  --radius: 12px; --radius-sm: 7px; --radius-card: 9px;
+  --card-shadow: none; --card-shadow-hover: 0 0 0 1px #3A4256, 0 8px 24px rgba(0, 0, 0, .45);
+  --card-pad: 12px; --card-gap: 8px;
+  --label-radius: 4px; --label-mix: 22%;
+  --danger: #FF6B6B; --danger-soft: rgba(255, 107, 107, .14);
+  --warn: #F5B547; --warn-soft: rgba(245, 181, 71, .14);
+  --info: #6CB6FF; --info-soft: rgba(108, 182, 255, .14);
+  --drawer-shadow: -16px 0 40px rgba(0, 0, 0, .5);
+  --scrollbar-thumb: rgba(231, 234, 240, .18); --scrollbar-thumb-hover: rgba(231, 234, 240, .32);
+  --cover-placeholder: linear-gradient(135deg, #1e3a8a, #6d28d9 60%, #be185d);
+}
+
+/* 配色 C 纸感（亮色）：暖白纸色、大圆角、柔和阴影，标题用衬线体。 */
+:root[data-palette="paper"] {
+  color-scheme: light;
+  --font: "Noto Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-heading: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+  --fs: 14px;
+  --bg: #F4EFE6; --surface: #FFFDF8; --sidebar-bg: #EFE8DB; --topbar-bg: #F4EFE6;
+  --border: #E3D9C6; --border-strong: #CDBFA6;
+  --text: #2B2620; --text-2: #4F473C; --muted: #9A8F7E;
+  --accent: #C2552B; --accent-contrast: #FFFFFF; --accent-soft: #F6E2D6;
+  --active-bg: #FFFDF8; --active-text: #2B2620; --active-shadow: 0 1px 4px rgba(120, 94, 60, .12);
+  --hover: #EDE5D6; --star: #C99A2E; --input-bg: #FFFDF8; --track: #D8CCB6;
+  --list-bg: #EDE5D6; --list-border: 1px solid transparent; --list-gap: 12px; --list-w: 280px; --count-bg: #E2D7C3;
+  --card-bg: #FFFDF8; --card-border: 1px solid #EADFCB;
+  --radius: 16px; --radius-sm: 10px; --radius-card: 14px;
+  --card-shadow: 0 1px 0 rgba(120, 94, 60, .06), 0 6px 18px rgba(120, 94, 60, .07);
+  --card-shadow-hover: 0 10px 28px rgba(120, 94, 60, .15);
+  --card-pad: 12px; --card-gap: 8px;
+  --label-radius: 4px; --label-mix: 16%;
+  --danger: #B4382E; --danger-soft: #F6DFD9; --warn: #A16207; --warn-soft: #F5E7C8; --info: #3F6E8C; --info-soft: #DDE9EF;
+  --drawer-shadow: -20px 0 40px rgba(80, 60, 30, .12);
+  --scrollbar-thumb: rgba(43, 38, 32, .2); --scrollbar-thumb-hover: rgba(43, 38, 32, .36);
+  --cover-placeholder: linear-gradient(135deg, #7dd3fc, #a78bfa 60%, #f9a8d4);
+}

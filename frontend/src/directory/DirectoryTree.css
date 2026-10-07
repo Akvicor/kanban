@@ -1,0 +1,45 @@
+/* 目录树，外观与 design/style-samples 的侧栏目录一致。 */
+.dir-tree { display: flex; flex-direction: column; gap: 1px; }
+.dir-empty { margin: 4px 8px; color: var(--muted); font-size: .88em; }
+
+.dir-row {
+  position: relative; display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 6px 4px 6px 8px;
+  border-radius: var(--radius-sm); color: var(--text-2); text-decoration: none; cursor: pointer;
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation;
+}
+.dir-row:hover { background: var(--hover); }
+.dir-row.active { background: var(--active-bg); color: var(--active-text); font-weight: 600; box-shadow: var(--active-shadow); }
+.dir-row.dragging { opacity: .4; }
+
+/* 拖动落点：前后显示一条线，放进文件夹时高亮整行。 */
+.dir-row.drop-before::before, .dir-row.drop-after::after {
+  content: ""; position: absolute; left: 8px; right: 8px; height: 2px; border-radius: 2px; background: var(--accent);
+}
+.dir-row.drop-before::before { top: -1px; }
+.dir-row.drop-after::after { bottom: -1px; }
+.dir-row.drop-inside { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+
+.dir-caret { width: 10px; flex: none; color: var(--muted); font-size: .75em; transition: transform .15s; }
+.dir-caret.open { transform: rotate(90deg); }
+.dir-icon { width: 14px; height: 12px; flex: none; border: 1.5px solid currentColor; border-radius: 3px; opacity: .7; }
+.dir-icon.folder { border-top-width: 3px; }
+.dir-icon.board { height: 14px; background: linear-gradient(90deg, transparent 45%, currentColor 45%, currentColor 55%, transparent 55%); }
+.dir-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: inherit; text-decoration: none; }
+a.dir-name:hover { color: var(--accent); }
+.dir-star { color: var(--star); font-size: .9em; }
+
+.dir-more {
+  width: 22px; height: 22px; flex: none; display: grid; place-items: center; padding: 0;
+  border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font: inherit; cursor: pointer; opacity: 0;
+}
+.dir-row:hover .dir-more, .dir-more[data-state="open"], .dir-more:focus-visible { opacity: 1; }
+.dir-more:hover { background: var(--hover); color: var(--text); }
+@media (hover: none) { .dir-more { opacity: 1; } }
+
+.dir-root-drop { min-height: 24px; border-radius: var(--radius-sm); }
+.dir-root-drop.active { box-shadow: inset 0 2px 0 var(--accent); }
+
+/* 看板归档中的项。 */
+.dir-row.path-node { color: var(--muted); cursor: default; }
+.dir-row.archived { cursor: default; }
+.dir-meta { flex: none; color: var(--muted); font-size: .78em; }

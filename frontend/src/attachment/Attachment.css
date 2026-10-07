@@ -1,0 +1,37 @@
+/* 卡片详情中的附件列表。 */
+.attachments, .uploads { margin: 0 0 8px; padding: 0; list-style: none; }
+.attachment { display: flex; align-items: center; gap: 10px; padding: 6px 4px; border-radius: var(--radius-sm); }
+.attachment:hover { background: var(--hover); }
+.attachment-thumb {
+  position: relative; width: 56px; height: 42px; flex: none; display: grid; place-items: center; overflow: hidden; padding: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--hover); color: var(--muted); cursor: pointer;
+}
+.attachment-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.attachment-thumb img.favicon { width: 20px; height: 20px; object-fit: contain; }
+.attachment-thumb.cover { outline: 2px solid var(--accent); outline-offset: 1px; }
+.thumb-text { font-size: .7em; font-weight: 700; }
+.attachment-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.attachment-name {
+  padding: 0; border: 0; background: none; color: var(--text); font: inherit; font-size: .88em; text-align: left; cursor: pointer;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.attachment-name:hover { color: var(--accent); }
+.attachment-meta { overflow: hidden; color: var(--muted); font-size: .75em; text-overflow: ellipsis; white-space: nowrap; }
+.attachment-actions { display: flex; gap: 6px; margin-top: 4px; }
+
+.upload { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 8px; padding: 6px 4px; font-size: .85em; }
+.upload-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.upload-state { color: var(--muted); font-size: .9em; white-space: nowrap; }
+.upload .progress { grid-column: 1 / -1; height: 4px; margin: 0; }
+.upload.failed .upload-state { color: var(--danger); white-space: normal; }
+
+/* 拖入文件时覆盖在卡片详情上的提示。 */
+.drop-hint {
+  position: absolute; inset: 8px; z-index: 5; display: grid; place-items: center; pointer-events: none;
+  border: 2px dashed var(--accent); border-radius: var(--radius); background: color-mix(in srgb, var(--surface) 85%, transparent);
+  color: var(--accent); font-weight: 600;
+}
+.pasted-text {
+  max-height: 200px; overflow: auto; margin: 0; padding: 8px 10px; border-radius: var(--radius-sm);
+  background: var(--hover); font-size: .85em; white-space: pre-wrap; word-break: break-all;
+}

@@ -1,0 +1,32 @@
+# 使用 PostgreSQL：首次启动前把 config.postgres.yaml.example 复制为 data/config.yaml，
+# 并把其中的 password 改成与下方 POSTGRES_PASSWORD 相同的值。附件仍保存在 data 目录中。
+services:
+  postgres:
+    image: postgres:17.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: kanban
+      POSTGRES_USER: kanban
+      POSTGRES_PASSWORD: change-me-before-start
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kanban -d kanban"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  kanban:
+    image: ghcr.io/akvicor/kanban:latest
+    container_name: kanban
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres-data:

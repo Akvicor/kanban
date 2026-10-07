@@ -1,0 +1,9 @@
+.login-page { display: grid; place-items: center; min-height: 100%; padding: 24px; background: var(--bg); }
+.login-card {
+  width: min(360px, 100%); padding: 28px 24px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+}
+.login-card .brand { justify-content: center; padding: 0 0 6px; font-size: 1.25em; }
+.login-card .brand .logo { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; display: block; }
+.login-card .btn { height: 36px; }

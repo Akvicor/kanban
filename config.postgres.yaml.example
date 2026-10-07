@@ -1,0 +1,44 @@
+# Kanban 示例配置（PostgreSQL）
+# 首次启动前复制为 data/config.yaml 并修改密码；使用 SQLite 参考 config.sqlite.yaml.example，
+# 不写配置文件时首次启动也会自动生成 data/config.yaml。
+
+app-name: Kanban
+# true 时从 server.web-path 目录实时读取前端文件，false 时使用嵌入二进制的前端
+debug: false
+
+server:
+  http-ip: 0.0.0.0
+  http-port: 3000
+  web-path: build
+  enable-https: false
+  crt-file: /data/cert/example.com.crt
+  key-file: /data/cert/example.com.key
+  # 受信任的反向代理地址（CIDR 或单个 IP），部署在反向代理后时填写代理的地址；为空时直接使用连接的来源地址作为客户端 IP
+  trusted-proxies: []
+
+database:
+  # 数据库类型：sqlite 或 postgres
+  type: postgres
+  # SQLite 数据库文件路径，type 为 sqlite 时生效
+  file: /data/kanban.db
+  # PostgreSQL 连接参数，type 为 postgres 时生效；数据库不存在时 migrate 会创建
+  host: postgres
+  port: 5432
+  database: kanban
+  username: kanban
+  # 必须与 docker-compose.postgres.yml 中的 POSTGRES_PASSWORD 一致
+  password: change-me-before-start
+
+storage:
+  # 附件文件、缩略图和未完成上传的存放目录；为空时使用配置文件所在目录下的 files
+  path: /data/files
+
+log:
+  enable-file: false
+  file: /data/kanban.log
+  # unknown, debug, trace, info, warning, error, fatal
+  mask: [unknown, debug, trace, info, warning, error, fatal]
+  # date, time, long_file, short_file, func, prefix, suffix
+  flag: [date, time, short_file, prefix, suffix]
+  # database
+  debug: []

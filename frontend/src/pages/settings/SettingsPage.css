@@ -1,0 +1,34 @@
+.palette-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+.palette-option {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface);
+  color: var(--text); font: inherit; text-align: left; cursor: pointer;
+}
+.palette-option:hover { background: var(--hover); }
+.palette-option.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.palette-swatch { display: flex; width: 100%; height: 28px; margin-bottom: 4px; overflow: hidden; border: 1px solid var(--border); border-radius: 4px; }
+.palette-swatch span { flex: 1; }
+
+.placeholder-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.section-title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+.shortcut-table { width: 100%; border-collapse: collapse; font-size: .92em; }
+.shortcut-table th { width: 40%; padding: 8px 12px 8px 0; color: var(--text-2); font-weight: 500; text-align: left; vertical-align: middle; }
+.shortcut-table td { padding: 6px 0; }
+.shortcut-table tr + tr { border-top: 1px solid var(--border); }
+.shortcut-keys { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.kbd-remove { margin-left: 6px; padding: 0; border: 0; background: transparent; color: var(--muted); font: inherit; cursor: pointer; }
+.kbd-remove:hover { color: var(--danger); }
+.capture { padding: 2px 8px; border: 1px dashed var(--accent); border-radius: 5px; color: var(--accent); font-size: .85em; }
+
+.device-list { margin: 0; padding: 0; list-style: none; }
+.device-list li { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.device-list li + li { border-top: 1px solid var(--border); }
+.device-info { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.device-info strong { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+
+@media (max-width: 600px) {
+  .shortcut-table th { width: auto; display: block; padding-bottom: 0; }
+  .shortcut-table td { display: block; }
+}

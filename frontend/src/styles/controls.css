@@ -1,0 +1,143 @@
+/* 通用控件：按钮、输入框、表单、提示。外观取自当前配色变量。 */
+
+.btn {
+  height: 32px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); font: inherit; font-size: .92em;
+  cursor: pointer; white-space: nowrap;
+}
+.btn:hover:not(:disabled) { background: var(--hover); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
+.btn.primary:hover:not(:disabled) { background: var(--accent); filter: brightness(1.06); }
+.btn.danger { color: var(--danger); }
+.btn.danger.solid { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--text-2); }
+.btn.ghost:hover:not(:disabled) { background: var(--hover); }
+.btn.sm { height: 26px; padding: 0 8px; font-size: .85em; }
+
+.icon-btn {
+  width: 32px; height: 32px; flex: none; display: inline-grid; place-items: center; padding: 0;
+  border: 0; background: transparent; color: var(--text-2); border-radius: var(--radius-sm); font: inherit; font-size: 1.1em; cursor: pointer;
+}
+.icon-btn:hover:not(:disabled) { background: var(--hover); }
+.icon-btn.starred { color: var(--star); }
+.icon-btn.sm { width: 26px; height: 26px; font-size: .9em; }
+
+.input, .textarea {
+  width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--input-bg); color: var(--text); font: inherit;
+}
+.input { height: 34px; }
+.textarea { min-height: 72px; resize: vertical; line-height: 1.6; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: .9em; }
+.input:focus, .textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+
+/* 下拉选择的触发按钮：与输入框同框体，箭头自绘，展开面板是菜单样式（见 components/Select）。 */
+.select-trigger {
+  width: 100%; height: 34px; display: inline-flex; align-items: center; gap: 6px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--input-bg); color: var(--text); font: inherit; text-align: left; cursor: pointer;
+}
+.select-trigger:hover:not(:disabled) { border-color: var(--border-strong); }
+.select-trigger:focus, .select-trigger[data-state='open'] { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+.select-trigger .select-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.select-trigger .select-chevron { flex: none; color: var(--muted); }
+
+/* 勾选框和单选框：自绘成与开关同一族的外观，选中用强调色。 */
+input[type='checkbox'] {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px; flex: none; display: inline-grid; place-items: center;
+  border: 1.5px solid var(--border-strong); border-radius: 4px; background: var(--input-bg);
+  cursor: pointer;
+}
+input[type='checkbox']:checked { background: var(--accent); border-color: var(--accent); }
+input[type='checkbox']:checked::after {
+  content: ""; width: 8px; height: 4px;
+  border: 2px solid var(--accent-contrast); border-top: 0; border-right: 0;
+  transform: rotate(-45deg) translate(0, -1px);
+}
+input[type='radio'] {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px; flex: none; display: inline-grid; place-items: center;
+  border: 1.5px solid var(--border-strong); border-radius: 50%; background: var(--input-bg);
+  cursor: pointer;
+}
+input[type='radio']:checked { border-color: var(--accent); }
+input[type='radio']:checked::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+input[type='checkbox']:focus-visible, input[type='radio']:focus-visible { outline: 2px solid var(--accent-soft); outline-offset: 1px; border-color: var(--accent); }
+
+/* 日期时间用系统日历面板，这里只弱化面板入口图标，让它不抢视觉。 */
+input[type='datetime-local']::-webkit-calendar-picker-indicator { opacity: .5; cursor: pointer; }
+input[type='datetime-local']::-webkit-calendar-picker-indicator:hover { opacity: .85; }
+
+/* 各类交互控件共用键盘聚焦环和禁用态：按钮、图标按钮、文字按钮、标签页、目录项、菜单里的项除外
+   （菜单用高亮背景表示当前项）。输入框类的聚焦还带边框变色，见上面各自的规则。 */
+button:focus-visible,
+a:focus-visible,
+[role='button']:focus-visible,
+[role='checkbox']:focus-visible {
+  outline: 2px solid var(--accent-soft); outline-offset: 1px;
+}
+.menu-item:focus-visible { outline: none; }
+.btn:disabled, .icon-btn:disabled, .select-trigger:disabled,
+input:disabled, textarea:disabled {
+  opacity: .55; cursor: not-allowed;
+}
+
+/* 搜索框：输入控件无边框，聚焦时由容器给出与输入框一致的聚焦效果。 */
+.search:focus-within { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+
+/* 颜色选择：触发块显示当前颜色，弹出面板里左侧预定义色板、右侧取色器。 */
+.color-trigger {
+  width: 24px; height: 24px; flex: none; padding: 0;
+  border: 1px solid var(--border); border-radius: 4px; background: var(--c);
+  cursor: pointer;
+}
+.color-trigger:hover { border-color: var(--border-strong); }
+.color-pop { display: flex; align-items: center; gap: 10px; }
+.color-presets { display: grid; grid-template-columns: repeat(5, 20px); gap: 5px; }
+.color-pop .swatch {
+  width: 20px; height: 20px; padding: 0;
+  border: 1px solid var(--border); border-radius: 4px; background: var(--c);
+  cursor: pointer; appearance: none; -webkit-appearance: none;
+}
+.color-pop .swatch:hover { border-color: var(--border-strong); }
+.color-pop .swatch[aria-pressed='true'] { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); }
+.color-custom {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding-left: 10px; border-left: 1px solid var(--border);
+}
+.color-custom .swatch.custom { position: relative; width: 26px; height: 26px; border-style: dashed; cursor: pointer; }
+.color-custom .swatch.custom input { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; opacity: 0; cursor: pointer; }
+.color-custom .swatch.custom:focus-within { outline: 2px solid var(--accent-soft); outline-offset: 1px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field > span { color: var(--text-2); font-size: .88em; }
+.form { display: flex; flex-direction: column; gap: 14px; }
+.form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.form-error { margin: 0; color: var(--danger); font-size: .88em; }
+.form-ok { margin: 0; color: var(--accent); font-size: .88em; }
+.hint { margin: 0; color: var(--muted); font-size: .85em; line-height: 1.6; }
+
+.radio-row { display: flex; flex-wrap: wrap; gap: 16px; color: var(--text-2); font-size: .92em; }
+.radio-row label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+
+.switch { position: relative; display: inline-flex; align-items: center; gap: 10px; color: var(--text-2); cursor: pointer; user-select: none; }
+/* 输入保留可聚焦，只是视觉上不可见，键盘可以切换开关并看到聚焦环。 */
+.switch input { position: absolute; width: 16px; height: 16px; margin: 0; opacity: 0; cursor: pointer; }
+.switch input:focus-visible + .track { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+.switch .track { position: relative; width: 32px; height: 18px; flex: none; border-radius: 999px; background: var(--track); transition: background .2s; }
+.switch .track::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .25); transition: left .2s;
+}
+.switch input:checked + .track { background: var(--accent); }
+.switch input:checked + .track::after { left: 16px; }
+
+.kbd {
+  display: inline-flex; align-items: center; height: 24px; padding: 0 8px;
+  border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 5px;
+  background: var(--surface); color: var(--text); font-size: .82em; white-space: nowrap;
+}
+.tag { padding: 1px 7px; border-radius: 999px; font-size: .78em; background: var(--accent-soft); color: var(--accent); }
+.tag.muted { background: var(--hover); color: var(--muted); }
+.tag.danger { background: var(--danger-soft); color: var(--danger); }

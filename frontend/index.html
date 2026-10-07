@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <meta name="theme-color" content="#FFFFFF"/>
+  <meta name="description" content="个人看板"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-title" content="看板"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192"/>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+  <title>看板</title>
+  <!-- 在样式和脚本加载前设置配色，避免首屏闪烁 -->
+  <script src="/palette-init.js"></script>
+</head>
+<body>
+<noscript>请启用 JavaScript 以使用看板。/ Please enable JavaScript to use Kanban.</noscript>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

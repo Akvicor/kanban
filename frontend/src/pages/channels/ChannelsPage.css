@@ -1,0 +1,12 @@
+/* 通知渠道列表。 */
+.channel-list { padding: 4px 16px; }
+.channel-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.channel-row:last-child { border-bottom: 0; }
+.channel-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.channel-info .hint { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.channel-actions { display: flex; flex: none; gap: 6px; }
+
+@media (max-width: 600px) {
+  .channel-row { flex-direction: column; align-items: stretch; }
+  .channel-info .hint { white-space: normal; overflow-wrap: anywhere; }
+}

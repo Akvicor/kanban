@@ -1,0 +1,10 @@
+# 使用 SQLite：首次启动自动生成 data/config.yaml，数据库文件和附件都在 data 目录中。
+services:
+  kanban:
+    image: ghcr.io/akvicor/kanban:latest
+    container_name: kanban
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - "3000:3000"
