@@ -10,6 +10,9 @@
     <a href="README.md">English</a> | <strong>简体中文</strong>
   </p>
   <p>
+    <a href="https://www.ksyaki.com/archives/kanban-zi-tuo-guan-de-ge-ren-ji-hua-yu-dai-ban-kan-ban">博客链接</a>
+  </p>
+  <p>
     <a href="#功能">功能</a> · <a href="#界面">界面</a> · <a href="#快速开始">快速开始</a> · <a href="#配置">配置</a> · <a href="#开发">开发</a> · <a href="#通知">通知</a> · <a href="#客户端">客户端</a>
   </p>
 </div>

@@ -10,6 +10,9 @@
     <strong>English</strong> | <a href="README.zh-CN.md">简体中文</a>
   </p>
   <p>
+    <a href="https://www.ksyaki.com/archives/kanban-zi-tuo-guan-de-ge-ren-ji-hua-yu-dai-ban-kan-ban">Blog</a>
+  </p>
+  <p>
     <a href="#features">Features</a> · <a href="#interface">Interface</a> · <a href="#quick-start">Quick Start</a> · <a href="#configuration">Configuration</a> · <a href="#development">Development</a> · <a href="#notifications">Notifications</a> · <a href="#clients">Clients</a>
   </p>
 </div>
