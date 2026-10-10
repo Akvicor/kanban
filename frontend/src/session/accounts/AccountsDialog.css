@@ -1,0 +1,27 @@
+.account-list { margin: 0 0 12px; padding: 0; list-style: none; }
+.account-row {
+  position: relative; display: flex; align-items: center; gap: 8px; padding: 8px 4px;
+  border-radius: var(--radius-sm);
+}
+.account-row + .account-row { border-top: 1px solid var(--border); }
+.account-row.dragging { opacity: .4; }
+.account-row.drop-before::before, .account-row.drop-after::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 2px; border-radius: 2px; background: var(--accent);
+}
+.account-row.drop-before::before { top: -1px; }
+.account-row.drop-after::after { bottom: -1px; }
+
+/* 触屏长按把手开始拖动，期间不触发文字选择和系统菜单。 */
+.account-handle {
+  flex: none; padding: 4px 2px; color: var(--muted); cursor: grab; letter-spacing: -3px;
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: none;
+}
+.account-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.account-info strong {
+  display: flex; align-items: center; gap: 6px; font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.account-info .hint { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.account-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.account-actions + .hint { margin: 8px 0 0; }

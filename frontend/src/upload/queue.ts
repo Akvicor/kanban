@@ -45,6 +45,11 @@ class UploadQueue {
 
   getItems = () => this.items
 
+  /** 是否有正在上传或等待上传的文件（失败的项不算）。切换或退出账号会刷新页面，此时不允许进行。 */
+  isBusy(): boolean {
+    return this.running || this.jobs.length > 0
+  }
+
   /** 把文件加入队列，上传到 cardId 对应的卡片。 */
   add(cardId: number, files: File[], onCreated: AttachmentCreated) {
     for (const file of files) {

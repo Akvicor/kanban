@@ -29,7 +29,7 @@ describe('FilesPage', () => {
     const fetchMock = vi.fn(async () => new Response(JSON.stringify(responses.shift())))
     vi.stubGlobal('fetch', fetchMock)
     const sync = new SyncStore(settings)
-    const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn(), logout: vi.fn()}
+    const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn()}
     render(
       <MemoryRouter>
         <SessionContext.Provider value={value}>

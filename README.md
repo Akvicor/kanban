@@ -33,7 +33,7 @@ Self-hosted personal planning and todo management with a five-level structure: f
 - **Search and filter**: within a panel by title, description, labels, priorities, members and dates; "today only" dims the rest
 - **Responsive + PWA**: layouts for desktop, tablet and phone; add to the home screen for full screen; three themes (Clean / Night / Paper)
 - **Chinese & English**: switch the interface language in personal settings, or follow the system; notifications use the same language
-- **Multi-user**: the admin creates accounts with isolated data; username, nickname, password, time zone and shortcuts are per user
+- **Multi-user**: the admin creates accounts with isolated data; username, nickname, password, time zone and shortcuts are per user; one browser can stay signed in to several accounts and switch between them under "Accounts" in the sidebar
 
 ## Interface
 

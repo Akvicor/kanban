@@ -49,6 +49,16 @@ func fileCookie(t *testing.T, recorder *httptest.ResponseRecorder) *http.Cookie 
 	return nil
 }
 
+// postAuth 带设备令牌发送空 JSON 的 POST 请求，返回原始响应，用于检查响应中的 Cookie。
+func postAuth(e *echo.Echo, path, token string) *httptest.ResponseRecorder {
+	req := httptest.NewRequest(http.MethodPost, path, strings.NewReader("{}"))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+	e.ServeHTTP(recorder, req)
+	return recorder
+}
+
 func postRaw(t *testing.T, e *echo.Echo, path, token string, body []byte) response {
 	t.Helper()
 	req := httptest.NewRequest(http.MethodPost, path, bytes.NewReader(body))
@@ -63,7 +73,8 @@ func postRaw(t *testing.T, e *echo.Echo, path, token string, body []byte) respon
 	return result
 }
 
-// TestFileDownloadWithCookie 验证文件接口：Cookie 认证、Range、下载文件名，以及登出后 Cookie 失效。
+// TestFileDownloadWithCookie 验证文件接口：Cookie 认证、Range、下载文件名；文件 Cookie 保存独立的文件令牌，
+// 重新签发或注销后旧 Cookie 失效且设备令牌不受影响，设备令牌形式的 Cookie 不被接受，登出后 Cookie 失效。
 func TestFileDownloadWithCookie(t *testing.T) {
 	dbtest.Run(t, func(t *testing.T) {
 		config.Global.Server.WebPath = "build"
@@ -127,12 +138,9 @@ func TestFileDownloadWithCookie(t *testing.T) {
 			t.Fatalf("未认证下载状态 = %d", recorder.Code)
 		}
 
-		issued := httptest.NewRecorder()
-		req := httptest.NewRequest(http.MethodPost, "/api/auth/file_cookie", nil)
-		req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
-		e.ServeHTTP(issued, req)
-		cookie := fileCookie(t, issued)
-		if !cookie.HttpOnly || cookie.SameSite != http.SameSiteStrictMode || cookie.Path != mw.FileCookiePath || cookie.Value != token {
+		cookie := fileCookie(t, postAuth(e, "/api/auth/file_cookie", token))
+		if !cookie.HttpOnly || cookie.SameSite != http.SameSiteStrictMode || cookie.Path != mw.FileCookiePath ||
+			cookie.Value == "" || cookie.Value == token {
 			t.Fatalf("文件 Cookie = %+v", cookie)
 		}
 
@@ -163,16 +171,48 @@ func TestFileDownloadWithCookie(t *testing.T) {
 			t.Fatalf("Range 状态 = %d, 内容 = %q", partial.Code, partial.Body.String())
 		}
 
-		logout := httptest.NewRecorder()
-		req = httptest.NewRequest(http.MethodPost, "/api/auth/logout", strings.NewReader("{}"))
-		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-		req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
-		e.ServeHTTP(logout, req)
-		if cleared := fileCookie(t, logout); cleared.MaxAge >= 0 {
+		// 设备令牌放进 Cookie 不被接受：Cookie 只认文件令牌。
+		deviceCookie := &http.Cookie{Name: mw.FileCookieName, Value: token}
+		if recorder := get(e, path, nil, deviceCookie); recorder.Code != http.StatusUnauthorized {
+			t.Fatalf("设备令牌形式的 Cookie 下载状态 = %d", recorder.Code)
+		}
+
+		// 重新签发后旧 Cookie 失效，新 Cookie 可用。
+		reissued := fileCookie(t, postAuth(e, "/api/auth/file_cookie", token))
+		if reissued.Value == cookie.Value {
+			t.Fatal("重新签发的文件令牌与旧值相同")
+		}
+		if recorder := get(e, path, nil, cookie); recorder.Code != http.StatusUnauthorized {
+			t.Fatalf("重新签发后旧 Cookie 下载状态 = %d", recorder.Code)
+		}
+		if recorder := get(e, path, nil, reissued); recorder.Code != http.StatusOK {
+			t.Fatalf("重新签发的 Cookie 下载状态 = %d", recorder.Code)
+		}
+
+		// 注销后 Cookie 被清除且失效，设备令牌仍然有效。
+		if cleared := fileCookie(t, postAuth(e, "/api/auth/file_cookie/revoke", token)); cleared.MaxAge >= 0 {
+			t.Fatalf("注销后 Cookie 没有清除: %+v", cleared)
+		}
+		if recorder := get(e, path, nil, reissued); recorder.Code != http.StatusUnauthorized {
+			t.Fatalf("注销后旧 Cookie 下载状态 = %d", recorder.Code)
+		}
+		if me := call(t, e, "/api/user/me", token, nil); me.Code != resp.Succeeded {
+			t.Fatalf("注销文件令牌后设备令牌失效: %+v", me)
+		}
+		if recorder := get(e, path, map[string]string{echo.HeaderAuthorization: "Bearer " + token}); recorder.Code != http.StatusOK {
+			t.Fatalf("注销文件令牌后请求头认证下载状态 = %d", recorder.Code)
+		}
+
+		// 登出吊销设备，文件令牌随之失效。
+		cookie = fileCookie(t, postAuth(e, "/api/auth/file_cookie", token))
+		if cleared := fileCookie(t, postAuth(e, "/api/auth/logout", token)); cleared.MaxAge >= 0 {
 			t.Fatalf("登出后 Cookie 没有清除: %+v", cleared)
 		}
 		if recorder := get(e, path, nil, cookie); recorder.Code != http.StatusUnauthorized {
 			t.Fatalf("令牌吊销后用旧 Cookie 下载状态 = %d", recorder.Code)
+		}
+		if recorder := postAuth(e, "/api/auth/file_cookie", token); recorder.Code != http.StatusOK || strings.Contains(recorder.Header().Get("Set-Cookie"), mw.FileCookieName+"=") {
+			t.Fatalf("吊销后仍能签发文件 Cookie: %d %v", recorder.Code, recorder.Header())
 		}
 	})
 }

@@ -44,6 +44,7 @@ func setupRoutes(e *echo.Echo) {
 		public.POST("/auth/login", api.Auth.Login, mw.LoginRateLimit())
 		user.POST("/auth/logout", api.Auth.Logout)
 		user.POST("/auth/file_cookie", api.Auth.FileCookie)
+		user.POST("/auth/file_cookie/revoke", api.Auth.RevokeFileCookie)
 	}
 
 	// 同步：WebSocket 在握手消息中认证，因此挂在公开分组

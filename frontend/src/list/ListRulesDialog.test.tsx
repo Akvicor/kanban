@@ -47,7 +47,7 @@ function renderDialog() {
     },
     1,
   )
-  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn(), logout: vi.fn()}
+  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn()}
   const onClose = vi.fn()
   render(
     <SessionContext.Provider value={value}>

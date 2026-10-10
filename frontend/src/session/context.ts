@@ -5,7 +5,7 @@ import {t} from '../i18n'
 
 /**
  * 当前登录状态：正在确认、连不上服务端（保留令牌并自动重试）、未登录、已登录。
- * 只有服务端明确返回未登录时才进入未登录。
+ * 只有服务端明确返回会话失效时才进入未登录；当前账号失效时它仍留在账号列表中，标记为已失效。
  */
 export type SessionStatus = 'loading' | 'unreachable' | 'anonymous' | 'authenticated'
 
@@ -15,8 +15,8 @@ export interface SessionValue {
   me: Me | null
   /** 已登录时当前用户的同步数据，其余状态为 null。 */
   sync: SyncStore | null
+  /** 登录。已登录时是添加另一个账号并切换过去（刷新页面）；切换、退出见 accounts/actions.ts。 */
   login: (username: string, password: string) => Promise<void>
-  logout: () => Promise<void>
 }
 
 export const SessionContext = createContext<SessionValue | null>(null)

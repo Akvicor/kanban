@@ -22,6 +22,17 @@ func (*deviceRepository) FindByTokenHash(ctx context.Context, tokenHash string) 
 	return device, conn(ctx).Where("token_hash = ?", tokenHash).Take(device).Error
 }
 
+// FindByFileTokenHash 按文件令牌哈希查找设备。
+func (*deviceRepository) FindByFileTokenHash(ctx context.Context, fileTokenHash string) (*model.Device, error) {
+	device := new(model.Device)
+	return device, conn(ctx).Where("file_token_hash = ?", fileTokenHash).Take(device).Error
+}
+
+// SetFileTokenHash 设置设备的文件令牌哈希，nil 表示注销。设备不存在时返回 gorm.ErrRecordNotFound。
+func (*deviceRepository) SetFileTokenHash(ctx context.Context, id int64, fileTokenHash *string) error {
+	return affected(conn(ctx).Model(&model.Device{}).Where("id = ?", id).Update("file_token_hash", fileTokenHash))
+}
+
 // ListByUser 按最后活跃时间倒序返回用户的全部设备。
 func (*deviceRepository) ListByUser(ctx context.Context, userID int64) ([]*model.Device, error) {
 	devices := make([]*model.Device, 0)

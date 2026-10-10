@@ -27,7 +27,7 @@ const me: Me = {
 
 function renderSection() {
   const sync = new SyncStore(me.settings)
-  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn(), logout: vi.fn()}
+  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn()}
   render(
     <SessionContext.Provider value={value}>
       <ShortcutSection />

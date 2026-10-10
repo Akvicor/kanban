@@ -94,13 +94,24 @@ func (s *authService) Login(ctx context.Context, username, password, deviceName 
 	return plain, &Session{User: user, Device: device}, nil
 }
 
-// Authenticate 按令牌明文找到设备和用户。令牌已吊销、设备闲置超过期限、账号已停用或不存在时返回未登录错误；
+// Authenticate 按设备令牌明文找到设备和用户。令牌已吊销、设备闲置超过期限、账号已停用或不存在时返回未登录错误；
 // 闲置超过期限的设备在这里被删除。
 func (s *authService) Authenticate(ctx context.Context, plain string) (*Session, error) {
+	return s.authenticate(ctx, plain, repository.Device.FindByTokenHash)
+}
+
+// AuthenticateFile 按文件令牌明文（文件 Cookie 的值）找到设备和用户，校验规则与 Authenticate 相同。
+// 文件令牌只能用于文件接口，由文件认证中间件调用。
+func (s *authService) AuthenticateFile(ctx context.Context, plain string) (*Session, error) {
+	return s.authenticate(ctx, plain, repository.Device.FindByFileTokenHash)
+}
+
+// authenticate 用 find 按令牌哈希取设备，再检查设备闲置、用户存在与停用，并刷新设备最后活跃时间。
+func (s *authService) authenticate(ctx context.Context, plain string, find func(context.Context, string) (*model.Device, error)) (*Session, error) {
 	if plain == "" {
 		return nil, unauthorized(resp.NotLoggedIn, "请先登录")
 	}
-	device, err := repository.Device.FindByTokenHash(ctx, token.Hash(plain))
+	device, err := find(ctx, token.Hash(plain))
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, unauthorized(resp.SessionExpired, "登录已失效，请重新登录")
 	}
@@ -133,6 +144,35 @@ func (s *authService) Authenticate(ctx context.Context, plain string) (*Session,
 		device.LastActiveAt = now
 	}
 	return &Session{User: user, Device: device}, nil
+}
+
+// IssueFileToken 为当前设备签发新的文件令牌，返回明文供写入文件 Cookie；库中只保存哈希。
+// 再次签发会覆盖旧哈希，旧的文件 Cookie 随之失效。设备已被吊销时返回登录失效错误。
+func (s *authService) IssueFileToken(ctx context.Context, session *Session) (string, error) {
+	plain := token.New()
+	hash := token.Hash(plain)
+	if err := setFileTokenHash(ctx, session, &hash); err != nil {
+		return "", err
+	}
+	return plain, nil
+}
+
+// RevokeFileToken 注销当前设备的文件令牌，之后带旧文件 Cookie 的请求不再通过认证；设备令牌不受影响。
+func (s *authService) RevokeFileToken(ctx context.Context, session *Session) error {
+	return setFileTokenHash(ctx, session, nil)
+}
+
+// setFileTokenHash 写入当前设备的文件令牌哈希。文件令牌不属于同步数据，不记录变更。
+func setFileTokenHash(ctx context.Context, session *Session, hash *string) error {
+	err := repository.Device.SetFileTokenHash(ctx, session.Device.ID, hash)
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return unauthorized(resp.SessionExpired, "登录已失效，请重新登录")
+	}
+	if err != nil {
+		return err
+	}
+	session.Device.FileTokenHash = hash
+	return nil
 }
 
 // Logout 吊销当前设备的令牌。

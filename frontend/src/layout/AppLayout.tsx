@@ -1,10 +1,12 @@
+import {useState} from 'react'
 import {Link, NavLink, Outlet, useMatch} from 'react-router-dom'
 import {Menu, MenuItem} from '../components/Menu'
 import {useDirectoryActions} from '../directory/actions'
 import {DirectoryActionsProvider} from '../directory/DirectoryActionsProvider'
 import {DirectoryTree} from '../directory/DirectoryTree'
-import {useMe, useSession} from '../session/context'
+import {useMe} from '../session/context'
 import {displayName} from '../session/account'
+import {AccountsDialog} from '../session/accounts/AccountsDialog'
 import {SidebarContext, useSidebarState} from './sidebar'
 import './AppLayout.css'
 import {useT} from '../i18n'
@@ -34,7 +36,7 @@ export function AppLayout() {
 function Sidebar() {
   const t = useT()
   const me = useMe()
-  const {logout} = useSession()
+  const [accountsOpen, setAccountsOpen] = useState(false)
   const actions = useDirectoryActions()
   const boardMatch = useMatch('/board/:boardId/*')
   const activeBoardId = boardMatch ? Number(boardMatch.params.boardId) : null
@@ -83,11 +85,12 @@ function Sidebar() {
         <NavLink to="/settings" className={navClass}>
           {t('nav.settings')}
         </NavLink>
-        <button type="button" className="nav-item" onClick={() => void logout()}>
-          {t('common.signOut')}
+        <button type="button" className="nav-item" onClick={() => setAccountsOpen(true)}>
+          {t('account.button')}
         </button>
         <div className="side-user">{displayName(me.account)}</div>
       </div>
+      <AccountsDialog open={accountsOpen} onOpenChange={setAccountsOpen} />
     </aside>
   )
 }

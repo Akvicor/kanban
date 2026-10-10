@@ -7,3 +7,7 @@
 .login-card .brand { justify-content: center; padding: 0 0 6px; font-size: 1.25em; }
 .login-card .brand .logo { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; display: block; }
 .login-card .btn { height: 36px; }
+.login-notice {
+  margin: 0; padding: 8px 10px; border-radius: var(--radius-sm);
+  background: var(--danger-soft); color: var(--danger); font-size: .9em; line-height: 1.5;
+}

@@ -95,7 +95,7 @@ function renderDetail(
   if (card.archived_at !== null) {
     sync.applyBundle({revision: 3, cards: [card], tasks: options.tasks ?? [], card_actions: [], card_links: [], attachments: [], notify_deliveries: []})
   }
-  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn(), logout: vi.fn()}
+  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn()}
   const onNotice = vi.fn()
   const onClose = vi.fn()
   render(

@@ -17,7 +17,7 @@ function renderPage(responses: object[]) {
   vi.stubGlobal('fetch', fetchMock)
   const sync = new SyncStore(settings)
   sync.applySnapshot({settings, devices: [], folders: [], boards: [], panels: [], labels: [], priority_levels: [], notify_channels: [channel]}, 1)
-  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn(), logout: vi.fn()}
+  const value: SessionValue = {status: 'authenticated', me, sync, login: vi.fn()}
   render(
     <MemoryRouter>
       <SessionContext.Provider value={value}>
